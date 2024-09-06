@@ -1,5 +1,12 @@
 import type React from 'react';
 
+export interface IPhotoLoadedParams {
+  loaded?: boolean;
+  naturalWidth?: number;
+  naturalHeight?: number;
+  broken?: boolean;
+}
+
 /**
  * 资源数据类型
  */
@@ -15,7 +22,13 @@ export interface DataType {
   /**
    * 自定义渲染，优先级比 src 低
    */
-  render?: (props: PhotoRenderParams) => React.ReactNode;
+  render?: (
+    props: PhotoRenderParams,
+    /**
+     * 旋转回调
+     */
+    onPhotoLoad?: (params: IPhotoLoadedParams) => void
+  ) => React.ReactNode;
   /**
    * 自定义覆盖节点
    */
@@ -108,6 +121,8 @@ export type PhotoRenderParams = {
   attrs: Partial<React.HTMLAttributes<HTMLElement>>;
   scale: number;
   rotate: number;
+  flipX: boolean; 
+  flipY: boolean; 
 };
 
 /**
@@ -159,9 +174,14 @@ export interface OverlayRenderProps {
    */
   scale: number;
   /**
-   * 缩放事件回调
+   * 旋转回调
    */
   onScale: (scale: number) => void;
+  flipX: boolean;
+  onFlipX: (flip: boolean) => void;
+  flipY: boolean;
+  onFlipY: (flip: boolean) => void;
+  onReset: () => void;
 }
 
 export interface ExposedProperties {
@@ -173,6 +193,10 @@ export interface ExposedProperties {
   onScale?: (scale: number) => void;
   // 旋转回调
   onRotate?: (rotate: number) => void;
+  flipX?: boolean;
+  onFlipX?: (flip: boolean) => void;
+  flipY?: boolean;
+  onFlipY?: (flip: boolean) => void;
 }
 
 export type ReachMoveFunction = (reachPosition: ReachType, clientX: number, clientY: number, scale?: number) => void;
